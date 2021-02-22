@@ -1,56 +1,28 @@
-import 'package:campusflutter/bloc/auth_b/auth_bloc.dart';
+import 'package:campusflutter/api/api_service.dart';
 import 'package:campusflutter/resources/header_login.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Login extends StatefulWidget {
-  Login({Key key}) : super(key: key);
+class Registro extends StatefulWidget {
+  Registro({Key key}) : super(key: key);
 
   @override
-  _LoginState createState() => _LoginState();
+  _RegistroState createState() => _RegistroState();
 }
 
-class _LoginState extends State<Login> {
+class _RegistroState extends State<Registro> {
+  final ApiService api = ApiService();
   final _addFormKey = GlobalKey<FormState>();
+  final nombre = TextEditingController();
   final email = TextEditingController();
   final password = TextEditingController();
-  AuthBloc authBloc;
-
-  @override
-  void initState() {
-    authBloc = BlocProvider.of<AuthBloc>(context);
-    authBloc.add(ComprobarPaginas());
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    // final msg = BlocBuilder<AuthBloc, AuthState>(
-    //   builder: (context, state) {
-    //     if (state is LoginErrorState) {
-    //       return Text(state.message);
-    //     } else if (state is LoginLoadinState) {
-    //       return Center(child: CircularProgressIndicator());
-    //     } else {
-    //       return Container();
-    //     }
-    //   },
-    // );
-
     return Scaffold(
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state is UserLoginSuccesState) {
-            return Navigator.pushNamed(context, '/user');
-          } else if (state is AdminLoginSuccesState) {
-            return Navigator.pushNamed(context, '/admin');
-          }
-        },
-        child: Container(
+       body: Container(
           padding: EdgeInsets.only(bottom: 30),
           child: Column(
             children: <Widget>[
-              HeaderLogin(text: "Login"),
+              HeaderLogin(text: "Registro"),
               Expanded(
                 flex: 1,
                 child: Form(
@@ -62,6 +34,11 @@ class _LoginState extends State<Login> {
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
                           _textInput(
+                              controller: nombre,
+                              hint: "Nombre",
+                              ocultar: false,
+                              icon: Icons.person),
+                          _textInput(
                               controller: email,
                               hint: "Email",
                               ocultar: false,
@@ -72,27 +49,21 @@ class _LoginState extends State<Login> {
                               ocultar: true,
                               icon: Icons.vpn_key),
                           Container(
-                            margin: EdgeInsets.only(top: 10),
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              "Forgot Password?",
-                            ),
-                          ),
-                          Container(
                             height: 150,
                             child: Center(
                               child: RaisedButton(
                                 onPressed: (){
-                                  if(_addFormKey.currentState.validate()){
-                                    _addFormKey.currentState.save();
-                                    authBloc.add(LoginButtonPress(email: email.text, password: password.text));
-                                  }
+                                   if(_addFormKey.currentState.validate()){
+                                     _addFormKey.currentState.save();
+                                     api.registro(nombre.text, email.text, password.text);
+                                     Navigator.pushNamed(context, '/login');
+                                   }
                                 },
                                 padding: EdgeInsets.fromLTRB(100, 10, 100, 10),
                                 color: Color(0xff0984e3),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
                                 child: Text(
-                                  'Insertar',
+                                  'Registrarse',
                                   style: TextStyle(color: Colors.white, fontSize: 18),
                                 ),
                               )
@@ -101,14 +72,14 @@ class _LoginState extends State<Login> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children:<Widget>[
-                              Text('¿ No tienes cuenta ?', style:TextStyle(color: Colors.black)),
+                              Text('¿ Ya tienes cuenta ?', style:TextStyle(color: Colors.black)),
                               SizedBox(width:10),
                               GestureDetector(
                                 onTap: (){
-                                  Navigator.pushNamed(context, '/registro');
+                                  Navigator.pushNamed(context, '/login');
                                 },
                                 child: Text(
-                                  'Registrate',
+                                  'Logeate',
                                   style: TextStyle(color: Color(0xff0984e3), decoration: TextDecoration.underline),
                                 )
                               )
@@ -123,11 +94,11 @@ class _LoginState extends State<Login> {
             ],
           ),
         ),
-      ),
     );
   }
+}
 
-  Widget _textInput({controller, hint, ocultar, icon}) {
+Widget _textInput({controller, hint, ocultar, icon}) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       decoration: BoxDecoration(
@@ -153,4 +124,3 @@ class _LoginState extends State<Login> {
       ),
     );
   }
-}

@@ -9,7 +9,7 @@ class BotonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onClick,
       child: Container(
         width: double.infinity,
         height: 40,
