@@ -28,7 +28,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         pref.setString('token', datos['token']);
         pref.setString('role', datos['comprobarLogin']['role']);
         yield UserLoginSuccesState();
-      } else if (datos['comprobarLogin']['role'] == 'admin') {
+      } else if (datos['comprobarLogin']['role'] == 'admin' ||
+          datos['comprobarLogin']['role'] == 'profesor') {
         pref.setString('token', datos['token']);
         pref.setString('role', datos['comprobarLogin']['role']);
         yield AdminLoginSuccesState();
@@ -41,7 +42,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else {
         if (pref.getString('role') == 'user') {
           yield UserLoginSuccesState();
-        } else if (pref.getString('role') == 'admin') {
+        } else if (pref.getString('role') == 'admin' ||
+            pref.getString('role') == 'profesor') {
           yield AdminLoginSuccesState();
         }
       }
