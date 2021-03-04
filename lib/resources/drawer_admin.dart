@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DrawerAdmin extends StatefulWidget {
-  final String nombre;
-  final String email;
-  DrawerAdmin({this.email, this.nombre});
+  DrawerAdmin();
 
   @override
   _DrawerAdminState createState() => _DrawerAdminState();
@@ -20,18 +18,24 @@ class _DrawerAdminState extends State<DrawerAdmin> {
     super.initState();
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-       child: Drawer(
+    return Drawer(
       child: ListView(
         children: <Widget>[
-          // UserAccountsDrawerHeader(
-          //    accountName: Text(widget.nombre),
-          //    accountEmail: Text(widget.email),
-          // ),
+          BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+            if (state is AdminLoginSuccesState) {
+              return UserAccountsDrawerHeader(
+                accountName: Text(state.nombre),
+                accountEmail: Text(state.email),
+              );
+            } else {
+              return ListTile(
+                title: Text("Error al cargar los datos"),
+                trailing: Icon(Icons.error),
+              );
+            }
+          }),
           ListTile(
             title: Text("Perfil"),
             trailing: Icon(Icons.edit),
@@ -39,14 +43,14 @@ class _DrawerAdminState extends State<DrawerAdmin> {
           ),
           ListTile(
             title: Text("Lista cursos"),
-            trailing: Icon(Icons.edit),
+            trailing: Icon(Icons.admin_panel_settings),
             onTap: () {
               Navigator.pushNamed(context, '/adminC');
             },
           ),
           ListTile(
             title: Text("Lista usuarios"),
-            trailing: Icon(Icons.edit),
+            trailing: Icon(Icons.verified_user),
             onTap: () {
               Navigator.pushNamed(context, '/adminU');
             },
@@ -61,7 +65,6 @@ class _DrawerAdminState extends State<DrawerAdmin> {
           )
         ],
       ),
-    )
     );
   }
 }

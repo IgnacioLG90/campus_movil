@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class Admin extends StatefulWidget {
   Admin({Key key}) : super(key: key);
 
@@ -19,22 +18,12 @@ class _AdminState extends State<Admin> {
   final ApiService api = ApiService();
   AuthBloc vueltaBlocAdmin;
   List<Curso> cursosList;
-  SharedPreferences datos;
-  String email;
-  String nombre;
 
   @override
   void initState() {
     vueltaBlocAdmin = BlocProvider.of<AuthBloc>(context);
     super.initState();
-    // checkLogin();
   }
-
-  // checkLogin() async {
-  //   datos = await SharedPreferences.getInstance();
-  //   this.email = datos.getString('email');
-  //   this.nombre = datos.getString('nombre');
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +36,7 @@ class _AdminState extends State<Admin> {
       appBar: AppBar(
         title: Text('Lista de cursos'),
       ),
-      drawer: DrawerAdmin(email: this.email, nombre: this.nombre,),
+      drawer: DrawerAdmin(),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is UserLoginSuccesState) {

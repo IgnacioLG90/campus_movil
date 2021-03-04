@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DrawerUser extends StatefulWidget {
-  final String nombre;
-  final String email;
-  DrawerUser({this.email, this.nombre});
+  DrawerUser();
 
   @override
   _DrawerUserState createState() => _DrawerUserState();
@@ -25,10 +23,19 @@ class _DrawerUserState extends State<DrawerUser> {
     return Drawer(
       child: ListView(
         children: <Widget>[
-          // UserAccountsDrawerHeader(
-          //     accountName: Text(widget.nombre),
-          //     accountEmail: Text(widget.email),
-          // ),
+          BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+            if (state is UserLoginSuccesState) {
+              return UserAccountsDrawerHeader(
+                accountName: Text(state.nombre),
+                accountEmail: Text(state.email),
+              );
+            } else {
+              return ListTile(
+                title: Text("Error al cargar los datos"),
+                trailing: Icon(Icons.error),
+              );
+            }
+          }),
           ListTile(
             title: Text("Perfil"),
             trailing: Icon(Icons.edit),

@@ -5,6 +5,7 @@ class UsuarioList {
     this.nombre,
     this.email,
     this.password,
+    this.img,
   });
 
   String role;
@@ -12,6 +13,7 @@ class UsuarioList {
   String nombre;
   String email;
   String password;
+  String img;
 
   factory UsuarioList.fromJson(Map<String, dynamic> json) => UsuarioList(
         role: json["role"],
@@ -19,6 +21,7 @@ class UsuarioList {
         nombre: json["nombre"],
         email: json["email"],
         password: json["password"],
+        img: json["img"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -27,5 +30,6 @@ class UsuarioList {
         "nombre": nombre,
         "email": email,
         "password": password,
+        "img": img,
       };
 }

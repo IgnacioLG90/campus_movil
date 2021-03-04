@@ -15,70 +15,63 @@ class AdminU extends StatefulWidget {
 }
 
 class _AdminUState extends State<AdminU> {
-    final ApiService api = ApiService();
-    AuthBloc vueltaBlocAdmin;
-    List<UsuarioList> usuariosList;
-    SharedPreferences datos;
-    String email;
-    String nombre;
-  
-    @override
-    void initState() {
-      vueltaBlocAdmin = BlocProvider.of<AuthBloc>(context);
-      super.initState();
-      // checkLogin();
+  final ApiService api = ApiService();
+  AuthBloc vueltaBlocAdmin;
+  List<UsuarioList> usuariosList;
+  SharedPreferences datos;
+  String email;
+  String nombre;
+
+  @override
+  void initState() {
+    vueltaBlocAdmin = BlocProvider.of<AuthBloc>(context);
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (usuariosList == null) {
+      usuariosList = List<UsuarioList>();
     }
-  
-    // checkLogin() async {
-    //   datos = await SharedPreferences.getInstance();
-    //   this.email = datos.getString('email');
-    //   this.nombre = datos.getString('nombre');
-    // }
-  
-    @override
-    Widget build(BuildContext context) {
-      if (usuariosList == null) {
-        usuariosList = List<UsuarioList>();
-      }
-  
-      return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text('Lista de Usuarios'),
-        ),
-        drawer: DrawerAdmin(email: this.email, nombre: this.nombre,),
-        body: BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
-            if (state is UserLoginSuccesState) {
-              return Navigator.pushNamed(context, '/user');
-            } else if (state is AdminLoginSuccesState) {
-              return Navigator.pushNamed(context, '/adminC');
-            } else if (state is ControlPageState) {
-              return Navigator.pushNamed(context, '/login');
-            }
-          },
-          child: Container(
-            child: FutureBuilder(
-              future: loadList(),
-              builder: (context, snapshot) {
-                return usuariosList.length > 0
-                    ? ListaUsarios(usuarios: usuariosList)
-                    : Center(
-                        child: Text('No existen Datos, Añade uno'),
-                      );
-              },
-            ),
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('Lista de Usuarios'),
+      ),
+      drawer: DrawerAdmin(),
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is UserLoginSuccesState) {
+            return Navigator.pushNamed(context, '/user');
+          } else if (state is AdminLoginSuccesState) {
+            return Navigator.pushNamed(context, '/adminC');
+          } else if (state is ControlPageState) {
+            return Navigator.pushNamed(context, '/login');
+          }
+        },
+        child: Container(
+          child: FutureBuilder(
+            future: loadList(),
+            builder: (context, snapshot) {
+              return usuariosList.length > 0
+                  ? ListaUsarios(usuarios: usuariosList)
+                  : Center(
+                      child: Text('No existen Datos, Añade uno'),
+                    );
+            },
           ),
         ),
-      );
-    }
-  
-    Future loadList() {
-      Future<List<UsuarioList>> futureCase = api.getAllUsers();
-      futureCase.then((usariosList) {
-        setState(() {
-          this.usuariosList = usuariosList;
-        });
+      ),
+    );
+  }
+
+  Future loadList() {
+    Future<List<UsuarioList>> futureCase = api.getAllUsers();
+    futureCase.then((usuariosList) {
+      setState(() {
+        this.usuariosList = usuariosList;
       });
-    }
+    });
+  }
 }
