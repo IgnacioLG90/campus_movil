@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class ListaCursosUser extends StatelessWidget {
   final List<Curso> cursos;
-  const ListaCursosUser({Key key, this.cursos}) : super(key: key);
+  ListaCursosUser({Key key, this.cursos}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,7 @@
 import 'package:campusflutter/api/api_service.dart';
 import 'package:campusflutter/bloc/auth_b/auth_bloc.dart';
 import 'package:campusflutter/pages/admin.dart';
+import 'package:campusflutter/pages/admin_u.dart';
 import 'package:campusflutter/pages/login.dart';
 import 'package:campusflutter/pages/pagina_carga.dart';
 import 'package:campusflutter/pages/registro.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
           '/login': (context) => Login(),
           '/registro': (context) => Registro(),
           '/user': (context) => User(),
-          '/admin': (context) => Admin(),
+          '/adminC': (context) => Admin(),
+          '/adminU': (context) => AdminU(),
         },
       ),
     );

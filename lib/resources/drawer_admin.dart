@@ -20,19 +20,36 @@ class _DrawerAdminState extends State<DrawerAdmin> {
     super.initState();
   }
 
+  
+
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+    return Container(
+       child: Drawer(
       child: ListView(
         children: <Widget>[
-          UserAccountsDrawerHeader(
-            accountName: Text(widget.nombre),
-            accountEmail: Text(widget.email),
-          ),
+          // UserAccountsDrawerHeader(
+          //    accountName: Text(widget.nombre),
+          //    accountEmail: Text(widget.email),
+          // ),
           ListTile(
             title: Text("Perfil"),
             trailing: Icon(Icons.edit),
             onTap: () {},
+          ),
+          ListTile(
+            title: Text("Lista cursos"),
+            trailing: Icon(Icons.edit),
+            onTap: () {
+              Navigator.pushNamed(context, '/adminC');
+            },
+          ),
+          ListTile(
+            title: Text("Lista usuarios"),
+            trailing: Icon(Icons.edit),
+            onTap: () {
+              Navigator.pushNamed(context, '/adminU');
+            },
           ),
           Divider(),
           ListTile(
@@ -44,6 +61,7 @@ class _DrawerAdminState extends State<DrawerAdmin> {
           )
         ],
       ),
+    )
     );
   }
 }

@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
           if (state is UserLoginSuccesState) {
             return Navigator.pushNamed(context, '/user');
           } else if (state is AdminLoginSuccesState) {
-            return Navigator.pushNamed(context, '/admin');
+            return Navigator.pushNamed(context, '/adminC');
           }
         },
         child: Container(
@@ -61,6 +61,7 @@ class _LoginState extends State<Login> {
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         children: <Widget>[
+                          // msg,
                           _textInput(
                               controller: email,
                               hint: "Email",
