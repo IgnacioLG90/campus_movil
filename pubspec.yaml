@@ -35,6 +35,8 @@ dependencies:
   equatable: ^1.2.6
   query_params: ^0.6.1
   lazy_load_scrollview: ^1.2.0
+  youtube_player_flutter: ^7.0.0+7
+
 
 dev_dependencies:
   flutter_test:

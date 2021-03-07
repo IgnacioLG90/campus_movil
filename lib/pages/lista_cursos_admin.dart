@@ -1,4 +1,5 @@
 import 'package:campusflutter/models/curso.dart';
+import 'package:campusflutter/pages/temario.dart';
 import 'package:flutter/material.dart';
 
 class ListaCursosAdmin extends StatelessWidget {
@@ -28,7 +29,9 @@ class ListaCursosAdmin extends StatelessWidget {
             ],
           ),
           child: InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => Temario(id: cursos[index].id)));
+            },
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -48,7 +51,7 @@ class ListaCursosAdmin extends StatelessWidget {
                                 ? Image.asset("assets/images/default2.jpg",
                                     fit: BoxFit.cover)
                                 : Image.network(
-                                    "http://192.168.1.127:3000/imgcurso/${cursos[index].imagen}",
+                                    "http://192.168.56.1:3000/imgcurso/${cursos[index].imagen}",
                                     fit: BoxFit.cover),
                           ),
                         ),

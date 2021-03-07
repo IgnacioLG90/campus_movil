@@ -49,10 +49,17 @@ class _DrawerAdminState extends State<DrawerAdmin> {
             },
           ),
           ListTile(
-            title: Text("Lista usuarios"),
+            title: Text("Lista Alumnos"),
             trailing: Icon(Icons.verified_user),
             onTap: () {
               Navigator.pushNamed(context, '/adminU');
+            },
+          ),
+          ListTile(
+            title: Text("Lista profesores"),
+            trailing: Icon(Icons.supervised_user_circle),
+            onTap: () {
+              Navigator.pushNamed(context, '/adminP');
             },
           ),
           Divider(),

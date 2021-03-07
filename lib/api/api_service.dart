@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:campusflutter/models/clase.dart';
 import 'package:campusflutter/models/curso.dart';
 import 'package:campusflutter/models/usuario.dart';
 import 'package:campusflutter/models/usuario_list.dart';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String apiUrl = "http://192.168.1.127:3000";
+  final String apiUrl = "http://192.168.56.1:3000";
 
   login(String email, String password) async {
     var respuesta = await http.post(
@@ -84,8 +85,8 @@ class ApiService {
     }
   }
 
-  Future<List<UsuarioList>> getAllUsers() async {
-    http.Response res = await http.get("$apiUrl/usuarios/usuariosMovil");
+  Future<List<UsuarioList>> getAllAlumnos() async {
+    http.Response res = await http.get("$apiUrl/usuarios/alumno");
 
     if (res.statusCode == 200) {
       List<dynamic> body = jsonDecode(res.body);
@@ -93,7 +94,33 @@ class ApiService {
           body.map((dynamic item) => UsuarioList.fromJson(item)).toList();
       return usuarios;
     } else {
-      throw "Error en la lista de Usuarios";
+      throw "Error en la lista de Alumnos";
+    }
+  }
+
+  Future<List<UsuarioList>> getAllProfesores() async {
+    http.Response res = await http.get("$apiUrl/usuarios/profesor");
+
+    if (res.statusCode == 200) {
+      List<dynamic> body = jsonDecode(res.body);
+      List<UsuarioList> usuarios =
+          body.map((dynamic item) => UsuarioList.fromJson(item)).toList();
+      return usuarios;
+    } else {
+      throw "Error en la lista de Profesores";
+    }
+  }
+
+  Future<List<Clase>> getAllClases(String id) async {
+    http.Response res = await http.get("$apiUrl/cursos/cursoPopMovil/$id");
+
+    if (res.statusCode == 200) {
+      List<dynamic> body = jsonDecode(res.body);
+      List<Clase> clases =
+          body.map((dynamic item) => Clase.fromJson(item)).toList();
+      return clases;
+    } else {
+      throw "Error en la lista de Clases";
     }
   }
 }

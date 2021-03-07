@@ -7,14 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AdminU extends StatefulWidget {
-  AdminU({Key key}) : super(key: key);
+class AdminP extends StatefulWidget {
+  AdminP({Key key}) : super(key: key);
 
   @override
-  _AdminUState createState() => _AdminUState();
+  _AdminPState createState() => _AdminPState();
 }
 
-class _AdminUState extends State<AdminU> {
+class _AdminPState extends State<AdminP> {
   final ApiService api = ApiService();
   AuthBloc vueltaBlocAdmin;
   List<UsuarioList> usuariosList;
@@ -67,7 +67,7 @@ class _AdminUState extends State<AdminU> {
   }
 
   Future loadList() {
-    Future<List<UsuarioList>> futureCase = api.getAllAlumnos();
+    Future<List<UsuarioList>> futureCase = api.getAllProfesores();
     futureCase.then((usuariosList) {
       setState(() {
         this.usuariosList = usuariosList;

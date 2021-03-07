@@ -15,22 +15,19 @@ class User extends StatefulWidget {
 
 class _UserState extends State<User> {
   final ApiService api = ApiService();
-  List<Curso> cursosList;
+  Future<List<Curso>> cursosList;
   AuthBloc vueltaBloc;
-  AuthState par;
   String id;
 
   @override
   void initState() {
     vueltaBloc = BlocProvider.of<AuthBloc>(context);
+    cursosList = api.getUsuarioPopulate(this.id);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (cursosList == null) {
-      cursosList = List<Curso>();
-    }
     return Scaffold(
       appBar: AppBar(
         title: Text('Exoformacion'),
@@ -39,6 +36,7 @@ class _UserState extends State<User> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is UserLoginSuccesState) {
+            this.id = state.id;
             return Navigator.pushNamed(context, '/user');
           } else if (state is AdminLoginSuccesState) {
             return Navigator.pushNamed(context, '/adminC');
@@ -48,13 +46,15 @@ class _UserState extends State<User> {
         },
         child: Container(
           child: FutureBuilder(
-            future: loadList(),
+            future: cursosList,
             builder: (context, snapshot) {
-              return cursosList.length > 0
-                  ? ListaCursosUser(cursos: cursosList)
-                  : Center(
-                      child: Text('No existen Datos, Añade uno'),
-                    );
+              if(snapshot.hasData){
+                return ListaCursosUser(cursos: snapshot.data);
+              } else if(snapshot.hasData == null){
+                return Center(child: Text('No existen Datos, Añade uno'),);
+              } else if(snapshot.hasError){
+                return Center(child: Text('${snapshot.error}'),);
+              }
             },
           ),
         ),
@@ -62,13 +62,13 @@ class _UserState extends State<User> {
     );
   }
 
-  Future loadList() {
-    Future<List<Curso>> futureCase =
-        api.getUsuarioPopulate("601269e995f29931009994a3");
-    futureCase.then((cursosList) {
-      setState(() {
-        this.cursosList = cursosList;
-      });
-    });
-  }
+  // Future loadList() {
+  //   Future<List<Curso>> futureCase =
+  //       api.getUsuarioPopulate("601269e995f29931009994a3");
+  //   futureCase.then((cursosList) {
+  //     setState(() {
+  //       this.cursosList = cursosList;
+  //     });
+  //   });
+  // }
 }
