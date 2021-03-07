@@ -70,7 +70,7 @@ class _TemarioState extends State<Temario> {
                   return Center(child: Text("${snapshot.error}"));
                 }
 
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               }
             )
        ),

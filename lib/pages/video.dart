@@ -51,26 +51,53 @@ class _VideoState extends State<Video> {
       builder: (context, player){
         return Scaffold(
           backgroundColor: Colors.black87,
-          appBar: AppBar(),
-          body: Container(
-            child: Column(
+          body: SafeArea(
+            child: Stack(
               children: <Widget>[
-                player,
-                SizedBox(height: 10.0),
-                Text('Detalle:', style: TextStyle(color: Colors.white)),
-                SizedBox(height: 10.0),
                 Container(
-                  width: 300,
-                  height: 200,
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Colors.white54
+                  height: double.infinity,
+                  child: Column(
+                    children: <Widget>[
+                      player,
+                      SizedBox(height: 10.0),
+                      Container(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text('Detalle del tema:', style: TextStyle(color: Colors.white, fontSize: 16)),
+                            SizedBox(height: 10.0),
+                            Container(
+                              width: double.infinity,
+                              height: 200,
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.white54
+                              ),
+                              child: widget.detalle == null 
+                              ?  Text("No hay descripcion")
+                              :  Text(widget.detalle),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  child: Text(widget.detalle),
-                )
+                ),
+                Container(
+                  margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Icon(Icons.arrow_back_ios_rounded, color: Colors.white, size: 30.0,)
+                  ),
+                ),
+                
               ],
             ),
+            
           ),
         );
       }, 

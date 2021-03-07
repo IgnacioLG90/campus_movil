@@ -1,13 +1,14 @@
 import 'package:campusflutter/api/api_service.dart';
 import 'package:campusflutter/bloc/auth_b/auth_bloc.dart';
 import 'package:campusflutter/models/curso.dart';
-import 'package:campusflutter/pages/lista_cursos_user.dart';
+import 'package:campusflutter/resources/lista_cursos_user.dart';
 import 'package:campusflutter/resources/drawer_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class User extends StatefulWidget {
-  User({Key key}) : super(key: key);
+  User({this.id});
+  final String id;
 
   @override
   _UserState createState() => _UserState();
@@ -22,7 +23,7 @@ class _UserState extends State<User> {
   @override
   void initState() {
     vueltaBloc = BlocProvider.of<AuthBloc>(context);
-    cursosList = api.getUsuarioPopulate(this.id);
+    cursosList = api.getUsuarioPopulate(widget.id);
     super.initState();
   }
 
@@ -36,8 +37,7 @@ class _UserState extends State<User> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is UserLoginSuccesState) {
-            this.id = state.id;
-            return Navigator.pushNamed(context, '/user');
+            return Navigator.push(context, MaterialPageRoute(builder: (context) => User(id: state.id)));
           } else if (state is AdminLoginSuccesState) {
             return Navigator.pushNamed(context, '/adminC');
           } else if (state is ControlPageState) {
@@ -45,7 +45,7 @@ class _UserState extends State<User> {
           }
         },
         child: Container(
-          child: FutureBuilder(
+          child: FutureBuilder<List<Curso>>(
             future: cursosList,
             builder: (context, snapshot) {
               if(snapshot.hasData){
@@ -53,8 +53,14 @@ class _UserState extends State<User> {
               } else if(snapshot.hasData == null){
                 return Center(child: Text('No existen Datos, Añade uno'),);
               } else if(snapshot.hasError){
-                return Center(child: Text('${snapshot.error}'),);
+                return Container(
+                  padding: EdgeInsets.all(10),
+                  child: Center(
+                    child: Text('${snapshot.error}'),
+                  ));
               }
+
+              return Center(child: CircularProgressIndicator());
             },
           ),
         ),

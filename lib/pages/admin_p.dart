@@ -1,7 +1,8 @@
 import 'package:campusflutter/api/api_service.dart';
 import 'package:campusflutter/bloc/auth_b/auth_bloc.dart';
 import 'package:campusflutter/models/usuario_list.dart';
-import 'package:campusflutter/pages/lista_usuarios.dart';
+import 'package:campusflutter/resources/lista_usuarios.dart';
+import 'package:campusflutter/pages/user.dart';
 import 'package:campusflutter/resources/drawer_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,7 +44,7 @@ class _AdminPState extends State<AdminP> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is UserLoginSuccesState) {
-            return Navigator.pushNamed(context, '/user');
+            return Navigator.push(context, MaterialPageRoute(builder: (context) => User(id: state.id)));
           } else if (state is AdminLoginSuccesState) {
             return Navigator.pushNamed(context, '/adminC');
           } else if (state is ControlPageState) {

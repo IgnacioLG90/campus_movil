@@ -1,4 +1,5 @@
 import 'package:campusflutter/bloc/auth_b/auth_bloc.dart';
+import 'package:campusflutter/pages/user.dart';
 import 'package:campusflutter/resources/header_login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,7 +42,8 @@ class _LoginState extends State<Login> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is UserLoginSuccesState) {
-            return Navigator.pushNamed(context, '/user');
+            //return Navigator.pushNamed(context, '/user', arguments: User(id: state.id));
+            return Navigator.push(context, MaterialPageRoute(builder: (context) => User(id: state.id)));
           } else if (state is AdminLoginSuccesState) {
             return Navigator.pushNamed(context, '/adminC');
           }
@@ -137,6 +139,7 @@ class _LoginState extends State<Login> {
       ),
       padding: EdgeInsets.only(left: 10),
       child: TextFormField(
+        keyboardType: TextInputType.emailAddress,
         controller: controller,
         obscureText: ocultar,
         decoration: InputDecoration(
